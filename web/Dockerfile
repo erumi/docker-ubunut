@@ -37,7 +37,7 @@ RUN apt-get install -y openssh-server
 RUN sed -i 's/PermitRootLogin .*/PermitRootLogin yes/g' /etc/ssh/sshd_config
 CMD service ssh start
 #ftp
-#RUN apt install -y vsftpd
+RUN apt install -y vsftpd
 RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
 RUN sed -i 's/#root/root/g' /etc/ftpusers
 CMD service vsftpd start
