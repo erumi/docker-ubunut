@@ -53,10 +53,13 @@ RUN sed -i 's/#root/root/g' /etc/ftpusers
 #采用进程管理工具实现镜像run时自动启动ssh服务
 RUN mkdir -p /var/log/supervisor
 
-CP supervisor.conf /etc/supervisor.conf
+COPY supervisor.conf /etc/supervisor.conf
 
 # 清除缓存
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #启动supervisord服务
 CMD ["/usr/bin/supervisord"]
+
+
+
