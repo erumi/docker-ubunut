@@ -53,7 +53,7 @@ RUN sed -i 's/root/#root/g' /etc/ftpusers
 #采用进程管理工具实现镜像run时自动启动ssh服务
 RUN mkdir -p /var/log/supervisor
 
-COPY supervisor.conf /etc/supervisor.conf
+COPY supervisord.conf /etc/supervisord.conf
 
 
 
