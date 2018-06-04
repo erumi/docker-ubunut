@@ -1,5 +1,5 @@
 # Base image to use, this nust be set as the first line
-FROM ubuntu
+FROM ubuntu:16.04
 
 # Maintainer: docker_user <docker_user at email.com> (@docker_user)
 MAINTAINER docker_user lixiang3024@163.com
@@ -42,22 +42,21 @@ RUN mkdir /var/run/sshd
 RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 RUN mkdir /root/.ssh
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 EXPOSE 22
+
+#ftp
+RUN apt install -y vsftpd
+RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
+RUN sed -i 's/#root/root/g' /etc/ftpusers
+
 
 #采用进程管理工具实现镜像run时自动启动ssh服务
 RUN mkdir -p /var/log/supervisor
-RUN echo "[supervisord]" >> /etc/supervisord.conf
-RUN echo "nodaemon=true" >> /etc/supervisord.conf
-RUN echo "[program:sshd]" >> /etc/supervisord.conf
-RUN echo "command=/usr/sbin/sshd -D" >> /etc/supervisord.conf
+
+CP supervisor.conf /etc/supervisor.conf
+
+# 清除缓存
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #启动supervisord服务
 CMD ["/usr/bin/supervisord"]
-
-#ftp
-#RUN apt install -y vsftpd
-#RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
-#RUN sed -i 's/#root/root/g' /etc/ftpusers
-#CMD service vsftpd start
-
