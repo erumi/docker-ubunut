@@ -25,12 +25,12 @@ ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #ifconfig 
-RUN apt install net-tools
+#RUN apt install net-tools
 #ping
-RUN apt install iputils-ping
+#RUN apt install iputils-ping
 #vim
-RUN apt install vim
+#RUN apt install vim
 #ssh
-RUN apt install openssh-server
+#RUN apt install openssh-server
 #ftp
-RUN apt install vsftpd
+#RUN apt install vsftpd
