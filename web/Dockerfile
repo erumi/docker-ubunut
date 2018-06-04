@@ -42,22 +42,30 @@ RUN mkdir /var/run/sshd
 RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 RUN mkdir /root/.ssh
-EXPOSE 22
+
 
 #ftp
 RUN apt install -y vsftpd
 RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
-RUN sed -i 's/#root/root/g' /etc/ftpusers
+RUN sed -i 's/root/#root/g' /etc/ftpusers
 
 
 #采用进程管理工具实现镜像run时自动启动ssh服务
 RUN mkdir -p /var/log/supervisor
 
-COPY supervisord.conf /etc/supervisord.conf
+COPY supervisor.conf /etc/supervisor.conf
+
+
 
 # 清除缓存
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 映射本地路径
+RUN mkdir /data
+VOLUME /data
+	
+EXPOSE 22
 #启动supervisord服务
 CMD ["/usr/bin/supervisord"]
 
