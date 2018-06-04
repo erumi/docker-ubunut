@@ -19,7 +19,7 @@ RUN echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restri
 RUN apt update
 
 #修改系统时区
-apt install tzdata
+RUN apt install tzdata
 #定义环境变量
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
