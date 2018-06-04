@@ -36,26 +36,22 @@ RUN apt-get install -y iputils-ping
 RUN apt-get install -y vim
 #ssh
 RUN apt-get install -y openssh-server
-
 RUN mkdir /var/run/sshd
-
 RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 RUN mkdir /root/.ssh
-
 
 #ftp
 RUN apt install -y vsftpd
 RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
 RUN sed -i 's/root/#root/g' /etc/ftpusers
+RUN mkdir /var/run/vsftpd
+RUN mkdir /var/log/vsftpd
 
 
 #采用进程管理工具实现镜像run时自动启动ssh服务
 RUN mkdir -p /var/log/supervisor
-
 COPY supervisord.conf /etc/supervisord.conf
-
-
 
 # 清除缓存
 RUN apt-get clean && \
@@ -68,6 +64,3 @@ VOLUME /data
 EXPOSE 22
 #启动supervisord服务
 CMD ["/usr/bin/supervisord"]
-
-
-
