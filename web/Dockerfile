@@ -18,7 +18,7 @@ RUN echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restri
 
 RUN apt-get update && apt-get upgrade -yf
 # 安装supervisor
-apt-get install -y supervisor
+RUN apt-get install -y supervisor
 # 修改root密码
 RUN echo 'root:8~W5!RAx?u6B'|chpasswd
 #修改系统时区
@@ -60,3 +60,4 @@ CMD ["/usr/bin/supervisord"]
 #RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
 #RUN sed -i 's/#root/root/g' /etc/ftpusers
 #CMD service vsftpd start
+
