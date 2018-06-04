@@ -34,11 +34,19 @@ RUN apt-get install -y vim
 #ssh
 RUN apt-get install -y openssh-server
 #运行root用户登录
-RUN sed -i 's/PermitRootLogin .*/PermitRootLogin yes/g' /etc/ssh/sshd_config
+RUN echo 'root:8~W5!RAx?u6B' |chpasswd
+RUN mkdir /var/run/sshd
+RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN mkdir /root/.ssh
 CMD service ssh start
+RUN apt-get clean && \
+	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+EXPOSE 22
+CMD    ["/usr/sbin/sshd", "-D"]
 #ftp
-RUN apt install -y vsftpd
-RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
-RUN sed -i 's/#root/root/g' /etc/ftpusers
-CMD service vsftpd start
+#RUN apt install -y vsftpd
+#RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
+#RUN sed -i 's/#root/root/g' /etc/ftpusers
+#CMD service vsftpd start
 
