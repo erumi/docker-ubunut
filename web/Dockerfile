@@ -41,14 +41,6 @@ RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_confi
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 RUN mkdir /root/.ssh
 
-#ftp
-RUN apt install -y vsftpd
-RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
-RUN sed -i 's/root/#root/g' /etc/ftpusers
-RUN mkdir -p /var/run/vsftpd/empty
-RUN mkdir /var/log/vsftpd
-
-
 #采用进程管理工具实现镜像run时自动启动ssh服务
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisord.conf
