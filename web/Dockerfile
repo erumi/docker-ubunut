@@ -45,7 +45,7 @@ RUN mkdir /root/.ssh
 RUN apt install -y vsftpd
 RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd.conf
 RUN sed -i 's/root/#root/g' /etc/ftpusers
-RUN mkdir /var/run/vsftpd
+RUN mkdir -p /var/run/vsftpd/empty
 RUN mkdir /var/log/vsftpd
 
 
@@ -58,9 +58,10 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # 映射本地路径
-RUN mkdir /data
 VOLUME /data
 	
+EXPOSE 20
+EXPOSE 21
 EXPOSE 22
 #启动supervisord服务
 CMD ["/usr/bin/supervisord"]
